@@ -1,0 +1,13 @@
+install.packages(c(
+  "tidyverse",
+  "R.matlab",
+  "ggplot2",
+  "caret",
+  "e1071",
+  "ranger",
+  "shiny",
+  "bslib",
+  "plotly",
+  "DT",
+  "rmarkdown"
+))
