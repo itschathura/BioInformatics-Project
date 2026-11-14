@@ -247,26 +247,34 @@ Restoring communication bandwidth is among the highest quality-of-life prioritie
 
 ---
 
-## 8. Reproducibility & Installation Guide
+## 8. Reproducibility & Terminal Execution Guide
 
-The entire repository is engineered to execute from start to finish with zero manual configuration.
+The entire repository is engineered to execute from start to finish via **terminal / PowerShell** with zero manual configuration.
 
 ### 8.1 Prerequisites
 - **R Version:** $\ge 4.0.0$ (Tested on R 4.6.2 for Windows 11).
-- **RStudio** or **VS Code with R Extension**.
+- **Environment:** Windows PowerShell, Command Prompt, or VS Code integrated terminal.
 
-### 8.2 Installation & Execution
+---
 
-#### Step 1: Install Dependencies
-Open your terminal in the project root directory and run:
-```bash
+### 8.2 Step-by-Step Terminal Execution (PowerShell)
+
+Open your terminal in the project root directory (`Y:\Projects\Bioinformatics\BioInformatics-Project`):
+
+#### Step 0: Ensure `Rscript` is in your terminal session PATH (Windows)
+```powershell
+$env:PATH += ";C:\Program Files\R\R-4.6.2\bin"
+```
+*(Alternatively, you can call the full path `& "C:\Program Files\R\R-4.6.2\bin\Rscript.exe"` directly).*
+
+#### Step 1: Install Missing Dependencies from CRAN
+```powershell
 Rscript setup_packages.R
 ```
-This automatically verifies and installs all missing CRAN packages (`tidyverse`, `R.matlab`, `caret`, `randomForest`, `ggplot2`, `plotly`, `shiny`, `bslib`, `DT`, `rmarkdown`, `knitr`).
+This automatically verifies and installs all required packages (`tidyverse`, `R.matlab`, `caret`, `randomForest`, `ggplot2`, `plotly`, `shiny`, `bslib`, `DT`, `rmarkdown`, `knitr`).
 
-#### Step 2: Run End-to-End Pipeline
-Execute the master pipeline script:
-```bash
+#### Step 2: Execute End-to-End Pipeline
+```powershell
 Rscript run_pipeline.R
 ```
 This sequentially:
@@ -274,19 +282,34 @@ This sequentially:
 2. Performs PCA and trains the Random Forest classifier (`models/rf_bci_model.rds` and `models/metrics.rds`).
 3. Generates all 5 high-resolution publication figures in `reports/figures/`.
 
-#### Step 3: Launch Interactive Shiny Dashboard
-Launch the web-based interactive BCI decoder:
-```R
-shiny::runApp("app/app.R")
+#### Step 3: Launch Interactive Shiny BCI Dashboard
+```powershell
+Rscript -e "shiny::runApp('app/app.R', launch.browser = TRUE)"
 ```
-The dashboard features:
-- **Neural Explorer:** Interactive 3D/2D Plotly manifold projections and full DT data table.
-- **Model Performance:** Confusion matrices, ROC/PR diagnostics, and variable importance metrics.
-- **Live BCI Decoder:** Virtual neural signal emulator with interactive sliders, presets, and real-time character decoding.
+This launches the local Shiny web application and automatically opens the clinical dashboard in your web browser. 
 
-#### Step 4: Render Full Analytical Report
-```R
-rmarkdown::render("reports/report.Rmd")
+The application is styled with a modern **Light Green + White theme** (Minty palette) and zero emojis, featuring:
+- **Neural Explorer Tab:** Interactive 2D PCA cluster projection, class-specific channel firing profiles, and searchable data table.
+- **Model Performance Tab:** Interactive confusion matrix heatmap, variable importance ranking bar chart, and per-class diagnostic metrics.
+- **Live BCI Decoder Tab:** Virtual intracortical signal emulator with real-time character decoding, custom trial sliders, presets, and posterior probability bar charts.
+
+#### Step 4: Compile the Analytical Report Notebook
+With Pandoc installed, compile the reproducible R Markdown document into a standalone HTML report:
+```powershell
+Rscript -e "rmarkdown::render('reports/report.Rmd')"
+```
+*(Alternatively, run `Rscript reports/render_report.R` or open `reports/report.html` directly in your browser).*
+
+---
+
+### 8.3 Direct Executable Calls (No PATH Setup Required)
+If you prefer not to modify `$env:PATH`:
+
+```powershell
+& "C:\Program Files\R\R-4.6.2\bin\Rscript.exe" setup_packages.R
+& "C:\Program Files\R\R-4.6.2\bin\Rscript.exe" run_pipeline.R
+& "C:\Program Files\R\R-4.6.2\bin\Rscript.exe" -e "shiny::runApp('app/app.R', launch.browser = TRUE)"
+& "C:\Program Files\R\R-4.6.2\bin\Rscript.exe" reports/render_report.R
 ```
 
 ---
@@ -296,7 +319,7 @@ rmarkdown::render("reports/report.Rmd")
 1. **Willett, F. R., Kunz, E. M., Fan, C., Avansino, D. T., Wilson, G. H., Choi, E. Y., ... & Shenoy, K. V.** (2021). High-performance brain-to-text communication via handwriting. *Nature*, 593(7858), 249–254. DOI: [10.1038/s41586-021-03506-2](https://doi.org/10.1038/s41586-021-03506-2).
 2. **Hochberg, L. R., Serruya, M. D., Friehs, G. M., Mukand, J. A., Saleh, M., Caplan, A. H., ... & Donoghue, J. P.** (2006). Neuronal ensemble control of prosthetic devices by a human with tetraplegia. *Nature*, 442(7099), 164–171.
 3. **Pandarinath, C., Nuyujukian, P., Blabe, C. H., Sorice, B. L., Saab, J., Willett, F. R., ... & Henderson, J. M.** (2017). High performance communication by people with paralysis using an intracortical brain-computer interface. *eLife*, 6, e18554.
-4. **Kuhn, M.** (2008). Building Predictive Models in R Using the caret Package. *Journal of Statistical Software*, 28(5), 1–26.
+4. **Kuhn, M.** (2008). Building Predictive Models in R Using the caret Package. *Journal of Statistical Software*, 28(5), 1–26.  
 5. **Breiman, L.** (2001). Random Forests. *Machine Learning*, 45(1), 5–32.
 6. **Chang, W., Cheng, J., Allaire, J., Xie, Y., & McPherson, J.** (2023). shiny: Web Application Framework for R. *R package version 1.8.0*.
 7. **Sievert, C.** (2020). Interactive Web-Based Data Visualization with R, plotly, and shiny. Chapman and Hall/CRC.
