@@ -4,7 +4,6 @@
 # Theme: Clean Light Green + White Aesthetic (Biomedical Clinical Interface)
 # Framework: R Shiny + bslib (Minty Light Palette) + plotly + DT
 # Execution: shiny::runApp("app/app.R") or Rscript -e "shiny::runApp('app')"
-# ==============================================================================
 
 suppressPackageStartupMessages({
   library(shiny)
