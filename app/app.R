@@ -46,9 +46,10 @@ if (!file.exists(data_file) || !file.exists(metrics_file) || !file.exists(model_
   old_wd <- getwd()
   setwd(proj_root)
   tryCatch({
-    source(file.path("R", "01_data_preprocessing.R"), local = TRUE)
-    source(file.path("R", "02_model_training.R"), local = TRUE)
-    source(file.path("R", "03_visualization.R"), local = TRUE)
+    src_dir <- if (dir.exists("code") && file.exists(file.path("code", "01_data_preprocessing.R"))) "code" else "R"
+    source(file.path(src_dir, "01_data_preprocessing.R"), local = TRUE)
+    source(file.path(src_dir, "02_model_training.R"), local = TRUE)
+    source(file.path(src_dir, "03_visualization.R"), local = TRUE)
   }, finally = {
     setwd(old_wd)
   })
