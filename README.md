@@ -81,7 +81,7 @@ Clinical BCI datasets frequently span multiple gigabytes of nested MATLAB struct
 ```
 
 #### Mode 1: Single `.mat` Ingestion
-When a single `.mat` file is placed into `data/raw/`, `R/01_data_preprocessing.R` inspects the structure using `R.matlab::readMat()`. It dynamically locates neural tensors (such as `neuralActivityCube` or `spikeRaster`), caps the trial extraction at 500 trials to prevent memory exhaustion, and extracts channel-wise mean firing rates, peak burst amplitudes, firing variance, and signal-to-noise ratio.
+When a single `.mat` file is placed into `data/raw/`, `code/01_data_preprocessing.R` inspects the structure using `R.matlab::readMat()`. It dynamically locates neural tensors (such as `neuralActivityCube` or `spikeRaster`), caps the trial extraction at 500 trials to prevent memory exhaustion, and extracts channel-wise mean firing rates, peak burst amplitudes, firing variance, and signal-to-noise ratio.
 
 #### Mode 2: Biophysical Synthetic Fallback (Default)
 When executed without raw external files, the pipeline simulates 500 trials across 5 character classes (`a`, `b`, `c`, `d`, `e`) based on established motor cortical physiology:
